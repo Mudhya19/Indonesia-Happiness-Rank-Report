@@ -109,7 +109,7 @@ with col2:
     ax.set_title("Happiest and Unhappiest Countries in 2021")
     st.pyplot(fig)
 
-
+# 2021 wolrd Happiest and Unhappiest
 low_c = '#dd4124'
 high_c = '#009473'
 plt.rcParams["font.family"] = "monospace"
@@ -152,6 +152,15 @@ l2 = lines.Line2D([0.15, 1.95], [0.07, 0.07], transform=fig.transFigure, figure=
 fig.lines.extend([l2])
     
 st.pyplot(fig)
+
+#Life Ladder Comparison By Countries
+fig = px.choropleth(df_past.sort_values("year"), 
+                    locations = "Country name", 
+                    color = "Life Ladder",
+                    locationmode = "country names",
+                    animation_frame = "year")
+fig.update_layout(title = "Life Ladder Comparison by Countries")
+st.plotly_chart(fig, use_container_width=True, width=800)
 
 # Plotting happiness score distribution
 df = df_2021[df_2021['Country name'].isin(SEA)]
@@ -244,3 +253,73 @@ plt.show()
 
 # Tampilkan chart menggunakan Streamlit
 st.pyplot(fig)
+# Kesimpulan
+st.subheader("Kesimpulan dari Grafik")
+st.write("""
+- **Posisi Indonesia**:
+    - Indonesia berada di peringkat 82 dalam indeks kebahagiaan global, yang berada di bawah rata-rata global.
+    - Di antara negara-negara Asia Tenggara, Indonesia berada di posisi tengah (peringkat 6 dari 10 negara yang disebutkan).
+- **Rata-rata Kebahagiaan**:
+    - Rata-rata global kebahagiaan adalah 5.53, dan skor kebahagiaan Indonesia berada di bawah rata-rata ini.
+- **Pentingnya Konteks Regional dan Global**:
+    - Meski Indonesia berada di peringkat menengah dalam konteks Asia Tenggara, dalam konteks global, Indonesia masih berada di bawah rata-rata kebahagiaan.
+""")
+
+# menambahkan Kontribusi Faktor-faktor terhadap kebahagian di indonesias
+st.header("menambahkan Kontribusi Faktor-faktor terhadap kebahagian di indonesias")
+# Filter data untuk Indonesia
+indonesia_data = df_2021[df_2021['Country name'] == 'Indonesia']
+
+# Pilih kolom-kolom yang relevan
+factors = ['Logged GDP per capita', 'Social support', 'Healthy life expectancy', 
+           'Freedom to make life choices', 'Generosity', 'Perceptions of corruption']
+
+# Analisis kontribusi masing-masing faktor terhadap skor kebahagiaan di Indonesia
+indonesia_factors = indonesia_data[factors].transpose()
+indonesia_factors.columns = ['Contribution']
+indonesia_factors = indonesia_factors.sort_values(by='Contribution', ascending=False)
+
+# Visualisasikan kontribusi faktor-faktor di Indonesia
+fig , ax = plt.subplots(figsize=(10,6))
+sns.barplot(x=indonesia_factors['Contribution'], y=indonesia_factors.index, palette='viridis')
+ax.set_title('Kontribusi Faktor-faktor terhadap Kebahagiaan di Indonesia')
+ax.set_xlabel('Kontribusi')
+ax.set_ylabel('Faktor')
+st.pyplot(fig)
+
+st.write(f"Beberapa faktor-faktor terhadap Kebahagiaan di Indonesia : ", indonesia_factors)
+
+#menambahkan distribution faktor-faktor terhadap kebahagiaan di Indonesia# Distribusi Kontribusi Faktor-faktor terhadap Kebahagiaan di Indonesia
+st.subheader("Distribusi Kontribusi Faktor-faktor terhadap Kebahagiaan di Indonesia")
+
+def freedman_diaconis_bins(data):
+    q75, q25 = np.percentile(data, [75 ,25])
+    iqr = q75 - q25
+    bin_width = 2 * iqr * len(data) ** (-1/3)
+    bins = round((data.max() - data.min()) / bin_width)
+    return bins
+
+# Set up subplots
+fig, axes = plt.subplots(nrows=3, ncols=2, figsize=(10, 9))
+# fig.suptitle('Distribusi Kontribusi Faktor-faktor terhadap Kebahagiaan di Indonesia', y=1.02, fontsize=16)
+
+# Flatten the axes for easy iteration
+axes = axes.flatten()
+
+# Loop through numeric columns and create histograms
+for i, col in enumerate(factors):
+    bins = freedman_diaconis_bins(df_2021[col])
+    sns.histplot(df_2021[col], kde=True, ax=axes[i], bins=bins)
+    axes[i].set_title(f'Distribusi {col}')
+
+# Adjust layout to prevent overlap
+plt.tight_layout()
+st.pyplot(fig)
+
+#kesimpulan 
+st.subheader("Kesimpulan dari Grafik")
+st.write("""
+**Kesimpulan**:
+- Healthy life expectancy dan Logged GDP per capita adalah dua faktor utama yang paling berkontribusi terhadap kebahagiaan di Indonesia. Hal ini menandakan pentingnya kesehatan dan kesejahteraan ekonomi dalam meningkatkan kebahagiaan masyarakat.
+- Faktor-faktor lain seperti kebebasan membuat pilihan hidup, persepsi terhadap korupsi, dukungan sosial, dan kedermawanan juga penting tetapi memiliki kontribusi yang lebih kecil.
+- Untuk meningkatkan kebahagiaan secara keseluruhan, kebijakan yang berfokus pada peningkatan kesehatan masyarakat dan kesejahteraan ekonomi perlu diprioritaskan. Selain itu, upaya untuk meningkatkan kebebasan pribadi, mengurangi korupsi, memperkuat dukungan sosial, dan mendorong kedermawanan juga akan memberikan dampak positif.""")
