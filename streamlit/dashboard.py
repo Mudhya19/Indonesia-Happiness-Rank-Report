@@ -41,7 +41,7 @@ if st.sidebar.checkbox("Show Dataset"):
 # Display summary statistics
 if st.sidebar.checkbox("Show Summary Statistics"):
     st.subheader("Summary Statistics")
-    st.write(df_past.describe())
+    st.write(df_past.describe().style.background_gradient(cmap="RdPu"))
 
 col1, col2 = st.columns(2)
 
@@ -163,6 +163,8 @@ fig.update_layout(title = "Life Ladder Comparison by Countries")
 st.plotly_chart(fig, use_container_width=True, width=800)
 
 # Plotting happiness score distribution
+st.header("How Happy Is Indonesia Among its Neighbors?")
+
 df = df_2021[df_2021['Country name'].isin(SEA)]
 df_2021_top = df_2021.iloc[0:1]
 df_2021_bot = df_2021.iloc[-1]
@@ -246,7 +248,7 @@ for i, bar in enumerate(bars2) :
         alpha=1,
     )
         
-plt.text(s="How Happy is Indonesia Among its Neighbors?", ha='left', x=xmin, y=ymax*1.12, fontsize=24, fontweight='bold', color=colors_dark[0])
+# plt.text(s="How Happy is Indonesia Among its Neighbors?", ha='left', x=xmin, y=ymax*1.12, fontsize=24, fontweight='bold', color=colors_dark[0])
 plt.title("Among SEA countries, Indonesia ranks 6th in the happiness index.\nIn a world context, Indonesia ranks 82th, still falls below average.", loc='left', fontsize=13, color=colors_dark[2])  
 plt.tight_layout()
 plt.show()
@@ -254,7 +256,7 @@ plt.show()
 # Tampilkan chart menggunakan Streamlit
 st.pyplot(fig)
 # Kesimpulan
-st.subheader("Kesimpulan dari Grafik")
+st.subheader("Kesimpulan dan insight")
 st.write("""
 - **Posisi Indonesia**:
     - Indonesia berada di peringkat 82 dalam indeks kebahagiaan global, yang berada di bawah rata-rata global.
@@ -266,7 +268,7 @@ st.write("""
 """)
 
 # menambahkan Kontribusi Faktor-faktor terhadap kebahagian di indonesias
-st.header("menambahkan Kontribusi Faktor-faktor terhadap kebahagian di indonesias")
+st.header("Kontribusi Faktor-faktor terhadap kebahagian di indonesia")
 # Filter data untuk Indonesia
 indonesia_data = df_2021[df_2021['Country name'] == 'Indonesia']
 
@@ -282,7 +284,7 @@ indonesia_factors = indonesia_factors.sort_values(by='Contribution', ascending=F
 # Visualisasikan kontribusi faktor-faktor di Indonesia
 fig , ax = plt.subplots(figsize=(10,6))
 sns.barplot(x=indonesia_factors['Contribution'], y=indonesia_factors.index, palette='viridis')
-ax.set_title('Kontribusi Faktor-faktor terhadap Kebahagiaan di Indonesia')
+# ax.set_title('Kontribusi Faktor-faktor terhadap Kebahagiaan di Indonesia')
 ax.set_xlabel('Kontribusi')
 ax.set_ylabel('Faktor')
 st.pyplot(fig)
@@ -317,9 +319,190 @@ plt.tight_layout()
 st.pyplot(fig)
 
 #kesimpulan 
-st.subheader("Kesimpulan dari Grafik")
+st.subheader("Kesimpulan dan insight")
 st.write("""
 **Kesimpulan**:
 - Healthy life expectancy dan Logged GDP per capita adalah dua faktor utama yang paling berkontribusi terhadap kebahagiaan di Indonesia. Hal ini menandakan pentingnya kesehatan dan kesejahteraan ekonomi dalam meningkatkan kebahagiaan masyarakat.
 - Faktor-faktor lain seperti kebebasan membuat pilihan hidup, persepsi terhadap korupsi, dukungan sosial, dan kedermawanan juga penting tetapi memiliki kontribusi yang lebih kecil.
 - Untuk meningkatkan kebahagiaan secara keseluruhan, kebijakan yang berfokus pada peningkatan kesehatan masyarakat dan kesejahteraan ekonomi perlu diprioritaskan. Selain itu, upaya untuk meningkatkan kebebasan pribadi, mengurangi korupsi, memperkuat dukungan sosial, dan mendorong kedermawanan juga akan memberikan dampak positif.""")
+# Menambahkan Analisis Tren Kebahagian
+st.header("Indonesia's Ladder Score Since 2006") 
+df = df_past[df_past['Country name'].isin(SEA)].set_index('Country name')
+df_idn = df.loc['Indonesia']
+df = df.reset_index()
+df = df[df['Country name'] != "Indonesia"]
+mean_idn = df_idn['Life Ladder'].mean()
+
+fig, ax = plt.subplots(figsize=(14, 8), dpi=75)
+
+line0 = sns.lineplot(data=df, x='year', y='Life Ladder', hue='Country name', alpha=0.2, ax=ax, palette=colors_mix[:9])
+line1 = ax.plot(df_idn.year, df_idn['Life Ladder'], alpha=1, marker='o', color=colors_red[3], linewidth=3, label='Indonesia')
+line2 = ax.axhline(mean_idn, linestyle='--', alpha=1, color=colors_dark[1])
+
+
+ax.legend(loc='upper center', bbox_to_anchor=(0.5, -0.2), ncol=5, borderpad=1, frameon=False, fontsize=12)
+ax.grid(axis='y', alpha=0.3)
+ax.set_axisbelow(True)
+ax.set_xlabel("Countries", fontsize=14, labelpad=10, fontweight='bold', color=colors_dark[0])
+ax.set_ylabel("Score", fontsize=14, labelpad=10, fontweight='bold', color=colors_dark[0])
+xmin, xmax = ax.get_xlim()
+ymin, ymax = ax.get_ylim()
+
+avgl  = ax.text(
+    s="Indonesia's\nAverage\nScore: {:.2f}".format(mean_idn),
+    x=xmax+0.5,
+    y=mean_idn,
+    backgroundcolor=colors_dark[2],
+    fontsize=12,
+    fontweight='bold',
+    color='white'
+)
+
+# plt.text(s="Indonesia's Ladder Score Since 2006", ha='left', x=xmin, y=ymax*1.08, fontsize=24, fontweight='bold', color=colors_dark[0])
+plt.title("It seems like there hasn't been any significant improvement in the score for the last 14 years.\nThe year with the most highest score for Indonesia is in 2014", loc='left', fontsize=13, color=colors_dark[2])  
+plt.tight_layout()
+plt.show()
+
+st.pyplot(fig)
+st.subheader("Kesimpulan dan insight")
+st.write("""
+Tren Kebahagiaan Indonesia (2006 - 2020):
+- Skor kebahagiaan Indonesia cenderung stabil dari tahun 2006 hingga 2020 dengan rata-rata skor 5.23.
+- Puncak skor kebahagiaan Indonesia terjadi pada tahun 2014.
+- Tidak ada peningkatan yang signifikan dalam skor kebahagiaan Indonesia selama periode tersebut.
+- Skor kebahagiaan cenderung mengalami fluktuasi ringan dari tahun ke tahun.
+
+Perbandingan dengan Negara Asia Tenggara Lainnya:
+- Singapura: Memiliki skor kebahagiaan yang relatif tinggi dan stabil dibandingkan negara-negara lain di Asia Tenggara.
+- Thailand: Menunjukkan sedikit penurunan dalam skor kebahagiaan setelah tahun 2014 tetapi tetap relatif stabil.
+- Malaysia: Memiliki tren yang cukup stabil dengan sedikit peningkatan setelah tahun 2016.
+- Filipina: Mengalami fluktuasi tetapi memiliki tren yang agak menurun sejak tahun 2014.
+- Vietnam dan Laos: Menunjukkan tren kebahagiaan yang relatif stabil dengan fluktuasi ringan.
+- Myanmar dan Kamboja: Memiliki skor kebahagiaan yang lebih rendah dibandingkan negara lainnya dan menunjukkan tren yang lebih bervariasi.
+
+Kesimpulan:
+
+- Stabilitas Skor: Kebahagiaan di Indonesia relatif stabil dari tahun 2006 hingga 2020 tanpa peningkatan signifikan, menunjukkan konsistensi dalam persepsi kebahagiaan masyarakat Indonesia.
+- Puncak pada 2014: Tahun 2014 menjadi tahun dengan skor kebahagiaan tertinggi, namun tidak diikuti oleh tren peningkatan yang berkelanjutan.
+- Perbandingan Regional: Indonesia berada di tengah-tengah jika dibandingkan dengan negara-negara Asia Tenggara lainnya. Singapura dan Malaysia cenderung lebih bahagia, sementara Myanmar dan Kamboja memiliki skor kebahagiaan yang lebih rendah.""")
+
+# Menambahkan Hubungan Ekonomi dan Kebahagian
+st.header("Where does Indonesia's Log GDP Ranks?")
+
+df_glob = df_2021.sort_values("Logged GDP per capita", ascending=False).reset_index(drop=True)
+df = df_glob[df_glob['Country name'].isin(SEA)]
+data_2021_top = df_glob.iloc[0:1]
+data_2021_bot = df_glob.iloc[-1]
+mean_score = df_glob['Logged GDP per capita'].mean()
+sea_idx = list(df.index + 1)
+
+fig, ax = plt.subplots(figsize=(14, 8))
+
+bars0 = ax.bar(data_2021_top['Country name'], data_2021_top['Logged GDP per capita'], color=colors_blue[0], alpha=0.6, edgecolor=colors_dark[0])
+bars1 = ax.bar(df['Country name'], df['Logged GDP per capita'], color=colors_dark[3], alpha=0.4, edgecolor=colors_dark[0])
+bars2 = ax.bar(data_2021_bot['Country name'], data_2021_bot['Logged GDP per capita'], color=colors_red[0], alpha=0.6, edgecolor=colors_dark[0])
+line  = ax.axhline(mean_score, linestyle='--', color=colors_dark[2])
+
+ax.legend(["Average", "Happiest", "SEA Countries", "Unhappiest"], loc='upper center', bbox_to_anchor=(0.5, -0.2), ncol=5, borderpad=1, frameon=False, fontsize=12)
+ax.grid(axis='y', alpha=0.3)
+ax.set_axisbelow(True)
+ax.set_xlabel("Countries", fontsize=14, labelpad=10, fontweight='bold', color=colors_dark[0])
+ax.set_ylabel("Log GDP per Capita", fontsize=14, labelpad=10, fontweight='bold', color=colors_dark[0])
+xmin, xmax = ax.get_xlim()
+ymin, ymax = ax.get_ylim()
+
+avgl  = ax.text(
+    s="Global\nAverage: {:.2f}".format(mean_score),
+    x=xmax*1.02,
+    y=mean_score,
+    backgroundcolor=colors_dark[2],
+    fontsize=12,
+    fontweight='bold',
+    color='white'
+)
+# Indonesia settings
+bars1[3].set_alpha(1)
+bars1[3].set_color(colors_red[3])
+bars1[3].set_edgecolor(colors_dark[0])
+
+for i, bar in enumerate(bars1) : 
+    x=bar.get_x()
+    y=bar.get_height()
+    if i == 0 : 
+        ax.text(
+            s=f"{sea_idx[i]}nd",
+            va='center', ha='center', 
+            x=x+0.38, y=y/2,
+            color=colors_dark[3],
+            fontsize=14,
+        )
+    elif i != 3 : 
+        ax.text(
+            s=f"{sea_idx[i]}th",
+            va='center', ha='center', 
+            x=x+0.38, y=y/2,
+            color=colors_dark[3],
+            fontsize=14,
+        )
+    else : 
+        ax.text(
+        s=f"{sea_idx[i]}th",
+        va='center', ha='center', 
+        x=x+0.38, y=y/2,
+        color='white',
+        fontsize=14,
+        fontweight='bold'
+    )
+        
+for i, bar in enumerate(bars0) : 
+    x=bar.get_x(),
+    y=bar.get_height(),
+
+    ax.text(
+        s=f"1st",
+        va='center', ha='center', 
+        x=x[0]+0.38, y=y[0]/2,
+        color="white",
+        fontsize=14,
+        fontweight='bold',
+        alpha=1,
+    )
+    
+for i, bar in enumerate(bars2) : 
+    x=bar.get_x(),
+    y=bar.get_height(),
+
+    ax.text(
+        s="149th",
+        va='center', ha='center', 
+        x=x[0]+0.38, y=y[0]/2,
+        color="white",
+        fontsize=14,
+        fontweight='bold',
+        alpha=1,
+    )
+
+# plt.text(s="Where does Indonesia's Log GDP Ranks?", ha='left', x=xmin, y=ymax*1.12, fontsize=24, fontweight='bold', color=colors_dark[0])
+plt.title("Among SEA countries, Indonesia ranks 4th in Log GDP per Capita scores.\nIn a world context, Indonesia ranks 87th. What interesting is Singapore falls in 2nd place", loc='left', fontsize=13, color=colors_dark[2])  
+plt.tight_layout()
+plt.show()
+
+st.pyplot(fig)
+
+st.subheader("Kesimpulan dan insight")
+st.write("""
+Peringkat Log GDP per Kapita Indonesia:
+- Di antara negara-negara Asia Tenggara, Indonesia berada di peringkat ke-4 dalam hal Log GDP per Kapita.
+- Dalam konteks global, Indonesia berada di peringkat ke-87.
+- Rata-rata global Log GDP per Kapita adalah 9.43.
+Perbandingan dengan Negara Lain:
+- Luksemburg memiliki Log GDP per Kapita tertinggi dengan peringkat pertama.
+- Singapura berada di peringkat kedua, menunjukkan kekuatan ekonomi yang signifikan.
+- Burundi memiliki Log GDP per Kapita terendah dengan peringkat ke-149.
+
+Penjelasan Umum
+
+Hubungan Ekonomi dan Kebahagiaan:
+- Grafik-grafik ini menunjukkan bagaimana peringkat kebahagiaan dan peringkat ekonomi (Log GDP per Kapita) Indonesia dibandingkan dengan negara lain.
+- Meskipun ekonomi Indonesia mungkin tidak sekuat beberapa negara lain di Asia Tenggara, tingkat kebahagiaannya masih berada di tengah-tengah.
+- Perbandingan dengan negara-negara lain menunjukkan bahwa ada faktor-faktor lain selain ekonomi yang mempengaruhi kebahagiaan.""")
