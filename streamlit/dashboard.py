@@ -506,3 +506,120 @@ Hubungan Ekonomi dan Kebahagiaan:
 - Grafik-grafik ini menunjukkan bagaimana peringkat kebahagiaan dan peringkat ekonomi (Log GDP per Kapita) Indonesia dibandingkan dengan negara lain.
 - Meskipun ekonomi Indonesia mungkin tidak sekuat beberapa negara lain di Asia Tenggara, tingkat kebahagiaannya masih berada di tengah-tengah.
 - Perbandingan dengan negara-negara lain menunjukkan bahwa ada faktor-faktor lain selain ekonomi yang mempengaruhi kebahagiaan.""")
+
+
+st.header("Analisis Perbandingan Regional Hubungan Skor Kebahagiaan dengan Logged GDP per Capita")
+# Scatter Plot dengan garis tren 
+fig = px.scatter(
+    df_2021, 
+    x="Ladder score", 
+    y="Logged GDP per capita", 
+    trendline="ols",
+    labels={"Ladder score": "Skor Kebahagiaan", "Logged GDP per capita": "Logged GDP per Capita"},
+    color="Regional indicator",  # Menambahkan warna berdasarkan indikator regional
+    size="Ladder score",  # Menambahkan ukuran marker berdasarkan skor kebahagiaan
+    hover_name="Country name",  # Menambahkan label hover dengan nama negara
+    opacity=0.8  # Menambahkan opacity agar lebih mudah melihat tumpukan marker
+)
+fig.update_layout(
+    showlegend=True,
+    width=1700, 
+    height=450)
+
+st.plotly_chart(fig)
+
+# Scatter plot dengan garis tren
+fig = px.scatter(
+    df_2021, 
+    x="Ladder score", 
+    y="Healthy life expectancy", 
+    trendline="ols",
+    labels={"Ladder score": "Skor Kebahagiaan", "Logged GDP per capita": "Logged GDP per Capita"},
+    color="Regional indicator",  # Menambahkan warna berdasarkan indikator regional
+    size="Ladder score",  # Menambahkan ukuran marker berdasarkan skor kebahagiaan
+    hover_name="Country name",  # Menambahkan label hover dengan nama negara
+    opacity=0.8  # Menambahkan opacity agar lebih mudah melihat tumpukan marker
+)
+fig.update_layout(
+    showlegend=True,
+    width=1700, 
+    height=450)
+
+# Membuat Streamlit dashboard
+st.plotly_chart(fig)
+
+# Scatter plot dengan garis tren
+fig = px.scatter(
+    df_2021, 
+    x="Ladder score", 
+    y="Freedom to make life choices", 
+    trendline="ols",
+    labels={"Ladder score": "Skor Kebahagiaan", "Logged GDP per capita": "Logged GDP per Capita"},
+    color="Regional indicator",  # Menambahkan warna berdasarkan indikator regional
+    size="Ladder score",  # Menambahkan ukuran marker berdasarkan skor kebahagiaan
+    hover_name="Country name",  # Menambahkan label hover dengan nama negara
+    opacity=0.8  # Menambahkan opacity agar lebih mudah melihat tumpukan marker
+)
+fig.update_layout(
+    showlegend=True,
+    width=1700, 
+    height=450)
+
+st.plotly_chart(fig)    
+
+# Scatter plot dengan garis tren
+fig = px.scatter(
+    df_2021, 
+    x="Ladder score", 
+    y="Perceptions of corruption", 
+    trendline="ols",
+    labels={"Ladder score": "Skor Kebahagiaan", "Logged GDP per capita": "Logged GDP per Capita"},
+    color="Regional indicator",  # Menambahkan warna berdasarkan indikator regional
+    size="Ladder score",  # Menambahkan ukuran marker berdasarkan skor kebahagiaan
+    hover_name="Country name",  # Menambahkan label hover dengan nama negara
+    opacity=0.8  # Menambahkan opacity agar lebih mudah melihat tumpukan marker
+)
+fig.update_layout(
+    showlegend=True,
+    width=1700, 
+    height=450)
+
+st.plotly_chart(fig)
+
+# Scatter plot dengan garis tren
+fig = px.scatter(
+    df_2021, 
+    x="Ladder score", 
+    y="Social support", 
+    trendline="ols",
+    labels={"Ladder score": "Skor Kebahagiaan", "Logged GDP per capita": "Logged GDP per Capita"},
+    color="Regional indicator",  # Menambahkan warna berdasarkan indikator regional
+    size="Ladder score",  # Menambahkan ukuran marker berdasarkan skor kebahagiaan
+    hover_name="Country name",  # Menambahkan label hover dengan nama negara
+    opacity=0.8  # Menambahkan opacity agar lebih mudah melihat tumpukan marker
+)
+fig.update_layout(
+    showlegend=True,
+    width=1700, 
+    height=450)
+
+st.plotly_chart(fig)
+
+# Scatter plot dengan garis tren
+fig = px.scatter(
+    df_2021, 
+    x="Ladder score", 
+    y="Generosity", 
+    trendline="ols",
+    labels={"Ladder score": "Skor Kebahagiaan", "Logged GDP per capita": "Logged GDP per Capita"},
+    color="Regional indicator",  # Menambahkan warna berdasarkan indikator regional
+    size="Ladder score",  # Menambahkan ukuran marker berdasarkan skor kebahagiaan
+    hover_name="Country name",  # Menambahkan label hover dengan nama negara
+    opacity=0.8  # Menambahkan opacity agar lebih mudah melihat tumpukan marker
+)
+fig.update_layout(
+    showlegend=True,
+    width=1700, 
+    height=450)
+
+st.plotly_chart(fig)
