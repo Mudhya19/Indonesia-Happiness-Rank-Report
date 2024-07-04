@@ -513,8 +513,7 @@ st.header("Analisis Perbandingan Regional Hubungan Skor Kebahagiaan dengan Logge
 fig = px.scatter(
     df_2021, 
     x="Ladder score", 
-    y="Logged GDP per capita", 
-    trendline="ols",
+    y="Logged GDP per capita",
     labels={"Ladder score": "Skor Kebahagiaan", "Logged GDP per capita": "Logged GDP per Capita"},
     color="Regional indicator",  # Menambahkan warna berdasarkan indikator regional
     size="Ladder score",  # Menambahkan ukuran marker berdasarkan skor kebahagiaan
@@ -532,8 +531,7 @@ st.plotly_chart(fig)
 fig = px.scatter(
     df_2021, 
     x="Ladder score", 
-    y="Healthy life expectancy", 
-    trendline="ols",
+    y="Healthy life expectancy",
     labels={"Ladder score": "Skor Kebahagiaan", "Logged GDP per capita": "Logged GDP per Capita"},
     color="Regional indicator",  # Menambahkan warna berdasarkan indikator regional
     size="Ladder score",  # Menambahkan ukuran marker berdasarkan skor kebahagiaan
@@ -552,8 +550,7 @@ st.plotly_chart(fig)
 fig = px.scatter(
     df_2021, 
     x="Ladder score", 
-    y="Freedom to make life choices", 
-    trendline="ols",
+    y="Freedom to make life choices",
     labels={"Ladder score": "Skor Kebahagiaan", "Logged GDP per capita": "Logged GDP per Capita"},
     color="Regional indicator",  # Menambahkan warna berdasarkan indikator regional
     size="Ladder score",  # Menambahkan ukuran marker berdasarkan skor kebahagiaan
@@ -571,8 +568,7 @@ st.plotly_chart(fig)
 fig = px.scatter(
     df_2021, 
     x="Ladder score", 
-    y="Perceptions of corruption", 
-    trendline="ols",
+    y="Perceptions of corruption",
     labels={"Ladder score": "Skor Kebahagiaan", "Logged GDP per capita": "Logged GDP per Capita"},
     color="Regional indicator",  # Menambahkan warna berdasarkan indikator regional
     size="Ladder score",  # Menambahkan ukuran marker berdasarkan skor kebahagiaan
@@ -590,8 +586,7 @@ st.plotly_chart(fig)
 fig = px.scatter(
     df_2021, 
     x="Ladder score", 
-    y="Social support", 
-    trendline="ols",
+    y="Social support",
     labels={"Ladder score": "Skor Kebahagiaan", "Logged GDP per capita": "Logged GDP per Capita"},
     color="Regional indicator",  # Menambahkan warna berdasarkan indikator regional
     size="Ladder score",  # Menambahkan ukuran marker berdasarkan skor kebahagiaan
@@ -609,8 +604,7 @@ st.plotly_chart(fig)
 fig = px.scatter(
     df_2021, 
     x="Ladder score", 
-    y="Generosity", 
-    trendline="ols",
+    y="Generosity",
     labels={"Ladder score": "Skor Kebahagiaan", "Logged GDP per capita": "Logged GDP per Capita"},
     color="Regional indicator",  # Menambahkan warna berdasarkan indikator regional
     size="Ladder score",  # Menambahkan ukuran marker berdasarkan skor kebahagiaan
